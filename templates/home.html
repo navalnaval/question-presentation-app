@@ -1,0 +1,31 @@
+<html>
+    <head>
+        <title>
+            Mentimeter App
+        </title>
+    </head>
+    <body onload="loadQuestionAndAnswer()">
+        <h1>
+            Mentimeter App
+        </h1>
+        <p id="question"></p>
+        <p id="results"></p>
+        <script>
+            function loadQuestionAndAnswer() {
+                let request = new XMLHttpRequest();
+                request.open("GET", "http://127.0.0.1:9002/quetionandresults");
+                request.send();
+                request.onload = () => {
+                    const responseObject = JSON.parse(request.response)
+                    document.getElementById("question").innerHTML = responseObject['question'];
+                    var results = "";
+                    for (var i in responseObject['results']){
+                        results = results + responseObject['results'][i]['label'] + ": " + responseObject['results'][i]['score'] + " -- ";
+                    }
+                    results = results.slice(0, -4)
+                    document.getElementById("results").innerHTML = results;
+                }
+            }
+        </script>
+    </body>
+</html>
